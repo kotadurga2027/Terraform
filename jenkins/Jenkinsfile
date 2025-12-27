@@ -1,5 +1,5 @@
 pipeline{
-    agent1{
+    AGENT1
         stages{
             stage("terraform with AWS"){
                 steps{
@@ -28,5 +28,5 @@ pipeline{
                 echo 'Terraform pipeline failed'
             }
         }
-    }
+    
 }
