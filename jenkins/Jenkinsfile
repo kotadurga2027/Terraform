@@ -1,0 +1,32 @@
+pipeline{
+    agent1{
+        stages{
+            stage("terraform with AWS"){
+                steps{
+                    withAWS(credentials: "aws-creds", region: "us-east-1"){
+                        script{
+                            stage("init"){
+                                sh "terraform init"                            
+                            }
+                            state("plan"){
+                                sh "terraform plan"
+                            }
+                            state("apply"){
+                                input message: "Approve ec2 creation"
+                                sh "terraform apply -auto-approve"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        post {
+            success {
+                echo 'Terraform pipeline completed successfully'
+            }
+            failure{
+                echo 'Terraform pipeline failed'
+            }
+        }
+    }
+}
